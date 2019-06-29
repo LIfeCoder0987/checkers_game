@@ -14,102 +14,62 @@ class Checker_data:
 
 	def init_board(self):
 		self.board = np.zeros((self.rows, self.cols))
-		# for row in range(self.rows):
-		# 	for col in range(self.cols):
-		# 		if row%2 == col%2:
-		# 			if row<3:
-		# 				self.board[row,col] = self.black
-		# 			elif row>4:
-		# 				self.board[row,col] = self.white
-		# 			else:
-		# 				self.board[row,col] = self.empty
-		# 		else:
-		# 			self.board[row,col] = self.empty
-		self.board[5,1] = self.white
-		self.board[4,0] = self.black
-
+		for row in range(self.rows):
+			for col in range(self.cols):
+				if row%2 == col%2:
+					if row<3:
+						self.board[row,col] = self.black
+					elif row>4:
+						self.board[row,col] = self.white
+					else:
+						self.board[row,col] = self.empty
+				else:
+					self.board[row,col] = self.empty
 
 	def get_simple_player_moves(self, simple_player):
 		moves = []
 
-		"""simple_position is a list of (row,col) tuple of the specific player"""
-		simple_position = self.get_simpte_position(simple_player)
+		simple_positions = self.get_simpte_positions(simple_player)
 
-		"""we iterate through the postion and unpacking the (row,col) tuple"""
-		for row,col in simple_position:
+		if simple_player == self.white:
+			for row, col in simple_positions:
+				if self.can_move_left(simple_player,row,col):
+					moves.append(Checkers_move(row, col, row-1, col-1))
+				if self.can_move_right(simple_player,row,col):
+					moves.append(Checkers_move(row, col, row-1, col+1))
+		if simple_player == self.black:
+			for row, col in simple_positions:
+				if self.can_move_left(simple_player,row,col):
+					moves.append(Checkers_move(row, col, row+1, col-1))
+				if self.can_move_right(simple_player,row,col):
+					moves.append(Checkers_move(row, col, row+1, col+1))
 
-			"""checking if the simple_player paramater is the white player"""
-			if simple_player == self.white:
-				"""checking the left side"""
-				if self.board[row-1,col-1] == self.black:
-					"""checking if the moves will be out of the board"""
-					if col-2>=0:
-						"""appending the jump move"""
-						moves.append(Checkers_move(row,col,row-2,col-2))
-				"""checking the right side"""
-				if self.board[row-1,col+1] == self.black:
-					"""checking if the moves will be out of the board"""
-					if col+2<=7:
-						"""appending the jump move"""
-						moves.append(Checkers_move(row,col, row-2, col+2))
-
-			"""checking if the function recieved a black player parameter"""
-			if simple_player == self.black:
-				"""checking the left side"""
-				if self.board[row+1,col-1] == self.white:
-					"""checking if the move is out of the board"""
-					if col-2>=0:
-						"""appending the jump move"""
-						moves.append(Checkers_move(row,col,row+2,col-2))
-				"""checking the right side"""
-				if self.board[row+1,col+1] == self.white:
-					"""checking if the move will be out of the board"""
-					if col+2<=7:
-						"""appending the jump move"""
-						moves.append(Checkers_move(row,col,row+2,col+2))
-
-		"""we want the jump to be the only moves avaleble because the jump is a must
-			move"""
-		if len(moves)==0:
-			"""other wise we continue to check for normale moves"""
-			for row,col in simple_position:
-				"""if the passed paramater of the player is the white player"""
-				if simple_player == self.white:
-					"""checking if the move will be out the board the left side
-						we want the col to be always smoll than zero so we can move"""
-					if col-1>=0:
-						"""checking if the next place is empty"""
-						if self.board[row-1,col-1] == self.empty:
-							"""append the normale move"""
-							moves.append(Checkers_move(row, col, row-1, col-1))
-					"""checking if the moves will be out the board the right side"""
-					if col+1<=7:
-						"""checking if the next place is empty"""
-						if self.board[row-1,col+1] == self.empty:
-							"""appending the move"""
-							moves.append(Checkers_move(row, col, row-1, col+1))
-				"""if the passed paramater of the player is the black player"""
-				if simple_player == self.black:
-					"""checking if the move will be out of the board"""
-					if col-1>=0:
-						"""the next place must be empty"""
-						if self.board[row+1,col-1] == self.empty:
-							"""appending the move"""
-							moves.append(Checkers_move(row, col, row+1, col-1))
-					"""checking if the move will be out of the board"""
-					if col+1<=7:
-						"""the next place must be empty"""
-						if self.board[row+1,col+1] == self.empty:
-							"""appending the move"""
-							moves.append(Checkers_move(row, col, row+1, col+1))
 		return moves
 
-	def get_simpte_position(self, player):
-		"""function that iterate through the board and return a list of tuples (row,col)
-			of the specific player"""
-		simple_position = []
+	def get_simpte_positions(self, player):
+		simple_positions = []
 		for row in range(self.rows):
 			for col in range(self.cols):
 				if self.board[row,col] == player:
-					simple_position.append((row,col))
-		return simple_position
+					simple_positions.append((row,col))
+		return simple_positions
+
+	def can_move_left(self,simple_player,row,col):
+		if simple_player == self.white:
+			if col-1>-1 and self.board[row-1,col-1] == self.empty:
+				return True
+			return False
+		if simple_player == self.black:
+			if col-1>-1 and self.board[row+1,col-1] == self.empty:
+				return True
+			return False
+
+	def can_move_right(self,simple_player,row,col):
+		if simple_player == self.white:
+			if col+1<8 and self.board[row-1, col+1] == self.empty:
+				return True
+			return False
+		if simple_player == self.black:
+			if col+1<8 and self.board[row+1, col+1] == self.empty:
+				return True
+			return False
