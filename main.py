@@ -1,4 +1,4 @@
-from checkers_data import Checker_data
+from checker_data import Checker_data
 
 def print_board(b):
 	print("    0   1   2   3   4   5   6   7")

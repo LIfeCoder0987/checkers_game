@@ -45,28 +45,28 @@ class Checker_data:
 					"""checking if the moves will be out of the board"""
 					if col-2>=0:
 						"""appending the jump move"""
-						moves.append(CheckersMove(row,col,row-2,col-2))
+						moves.append(Checkers_move(row,col,row-2,col-2))
 				"""checking the right side"""
 				if self.board[row-1,col+1] == self.black:
 					"""checking if the moves will be out of the board"""
 					if col+2<=7:
 						"""appending the jump move"""
-						moves.append(CheckersMove(row,col, row-2, col+2))
+						moves.append(Checkers_move(row,col, row-2, col+2))
 
 			"""checking if the function recieved a black player parameter"""
-			elif simple_player == self.black:
+			if simple_player == self.black:
 				"""checking the left side"""
 				if self.board[row+1,col-1] == self.white:
 					"""checking if the move is out of the board"""
 					if col-2>=0:
 						"""appending the jump move"""
-						moves.append(CheckersMove(row,col,row+2,col-2))
+						moves.append(Checkers_move(row,col,row+2,col-2))
 				"""checking the right side"""
 				if self.board[row+1,col+1] == self.white:
 					"""checking if the move will be out of the board"""
 					if col+2<=7:
 						"""appending the jump move"""
-						moves.append(CheckersMove(row,col,row+2,col+2))
+						moves.append(Checkers_move(row,col,row+2,col+2))
 
 		"""we want the jump to be the only moves avaleble because the jump is a must
 			move"""
@@ -81,27 +81,27 @@ class Checker_data:
 						"""checking if the next place is empty"""
 						if self.board[row-1,col-1] == self.empty:
 							"""append the normale move"""
-							moves.append(CheckersMove(row, col, row-1, col-1))
+							moves.append(Checkers_move(row, col, row-1, col-1))
 					"""checking if the moves will be out the board the right side"""
 					if col+1<=7:
 						"""checking if the next place is empty"""
 						if self.board[row-1,col+1] == self.empty:
 							"""appending the move"""
-							moves.append(CheckersMove(row, col, row-1, col+1))
+							moves.append(Checkers_move(row, col, row-1, col+1))
 				"""if the passed paramater of the player is the black player"""
-				elif simple_player == self.black:
+				if simple_player == self.black:
 					"""checking if the move will be out of the board"""
 					if col-1>=0:
 						"""the next place must be empty"""
 						if self.board[row+1,col-1] == self.empty:
 							"""appending the move"""
-							moves.append(CheckersMove(row, col, row+1, col-1))
+							moves.append(Checkers_move(row, col, row+1, col-1))
 					"""checking if the move will be out of the board"""
 					if col+1<=7:
 						"""the next place must be empty"""
 						if self.board[row+1,col+1] == self.empty:
 							"""appending the move"""
-							moves.append(CheckersMove(row, col, row+1, col+1))
+							moves.append(Checkers_move(row, col, row+1, col+1))
 		return moves
 
 	def get_simpte_position(self, player):
