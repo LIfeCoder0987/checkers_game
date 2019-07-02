@@ -22,29 +22,18 @@ def print_board(b):
 if __name__ == '__main__':
 
 	board_data = Checker_data()
-	trigger = 1
-	while True:
-		if trigger==1:
-			print_board(board_data)
-		try:
-			white_moves = board_data.get_simple_player_moves(board_data.white)
-			print("len white_moves",len(white_moves))
-			print("white_moves")
-			for item in white_moves:
-				print(item.from_row,item.from_col,item.to_row,item.to_col)
-			r1,c1,r2,c2 = input("White player Enter One oF the Moves above: ").split(" ")
-			board_data.make_move(board_data.white,int(r1),int(c1),int(r2),int(c2))
-			print_board(board_data)
-
-			black_moves = board_data.get_simple_player_moves(board_data.black)
-			print("len black_moves",len(black_moves))
-			print("black_moves")
-			for item in black_moves:
-				print(item.from_row,item.from_col,item.to_row,item.to_col)
-			r1,c1,r2,c2 = input("Black player Enter One oF the Moves above: ").split(" ")
-			board_data.make_move(board_data.black, int(r1),int(c1),int(r2),int(c2))
-			print_board(board_data)
-			trigger=0
-
-		except KeyboardInterrupt:
-			break
+	print_board(board_data)
+	moves = board_data.get_moves()
+	print(len(moves))
+	for move in moves:
+		print(move.from_row,move.from_col,move.to_row,move.to_col)
+	# pieces_position = board_data.get_pieces_position()
+	# for piece in pieces_position.keys():
+	# 	if piece == board_data.white:
+	# 		print("white piece(s) at",pieces_position[piece])
+	# 	if piece == board_data.black:
+	# 		print("black piece(s) at",pieces_position[piece])
+	# 	if piece == board_data.white_king:
+	# 		print("white king piece(s) at", pieces_position[piece])
+	# 	if piece == board_data.black_king:
+	# 		print("black king piece(s) at", pieces_position[piece])
