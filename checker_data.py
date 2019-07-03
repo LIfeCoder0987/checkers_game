@@ -5,6 +5,7 @@ class Checker_data:
 	def __init__(self, rows=8, cols=8):
 		self.rows = rows
 		self.cols = cols
+		self._range = [i for i in range(0,8)]
 		self.empty = 0
 		self.white = 1
 		self.black = 2
@@ -25,10 +26,7 @@ class Checker_data:
 		# 				self.board[row,col] = self.empty
 		# 		else:
 		# 			self.board[row,col] = self.empty
-		self.board[4,2] = self.white
-		self.board[3,3] = self.black
-		self.board[2,1] = self.black
-		self.board[0,3] = self.white_king
+		self.board[1,3] = self.white_king
 		self.board[7,3] = self.black_king
 
 	def get_pieces_position(self):
@@ -73,10 +71,7 @@ class Checker_data:
 						moves.append(Checkers_move(row,col,row+2,col-2))
 
 			if piece == self.white_king:
-				white_king_pos = dict_pos[piece]
-				for row, col in white_king_pos:
-					if self.can_jump(piece,row,col,0,0,0,0):
-						pass
+				pass
 
 			if piece == self.black_king:
 				pass
@@ -87,21 +82,25 @@ class Checker_data:
 				if piece == self.white:
 					white_pos = dict_pos[piece]
 					for row, col in white_pos:
-						if self.can_move(piece,row-1,col-1):
+						if self.can_move(piece,row,col,row-1,col-1):
 							moves.append(Checkers_move(row,col,row-1,col-1))
-						if self.can_move(piece,row-1,col+1):
+						if self.can_move(piece,row,col,row-1,col+1):
 							moves.append(Checkers_move(row,col,row-1,col+1))
 
 				if piece == self.black:
 					black_pos = dict_pos[piece]
 					for row, col in black_pos:
-						if self.can_move(piece,row+1,col-1):
+						if self.can_move(piece,row,col,row+1,col-1):
 							moves.append(Checkers_move(row,col,row+1,col-1))
-						if self.can_move(piece,row+1,col+1):
+						if self.can_move(piece,row,col,row+1,col+1):
 							moves.append(Checkers_move(row,col,row+1,col+1))
 
 				if piece == self.white_king:
-					pass
+					white_king_pos = dict_pos[piece]
+					for row, col in white_king_pos:
+						checker_move_list = self.can_move(piece,row,col,0,0)
+						for i in checker_move_list:
+							moves.append(i)
 
 				if piece == self.black_king:
 					pass
@@ -121,7 +120,25 @@ class Checker_data:
 			return False
 
 		if piece == self.white_king:
-			pass
+			checker_move_list = []
+			rows = self._range[row1+1:]
+			r_rows = self._range[row1-1::-1]
+			cols = self._range[col1+1:]
+			r_cols = self._range[col1-1::-1]
+			if len(rows)>len(cols):
+				for col_2 in cols:
+					row_2 = rows[cols.index(col_2)]
+					checker_move_list.append(Checkers_move(row1,col1,row_2,col_2))
+				for row_2 in r_rows:
+					col_2 = r_cols[r_rows.index(row_2)]
+					checker_move_list.append(Checkers_move(row1,col1,row_2,col_2))
+			elif len(rows)<len(cols):
+				pass
+			elif len(rows)==len(cols):
+				pass
+
+			return checker_move_list
+
 		if piece == self.black_king:
 			pass
 
@@ -140,3 +157,8 @@ class Checker_data:
 			and self.board[row3,col3] == self.empty:
 				return True
 			return False
+
+		if piece == self.white_king:
+			pass
+		if piece == self.black_king:
+			pass
